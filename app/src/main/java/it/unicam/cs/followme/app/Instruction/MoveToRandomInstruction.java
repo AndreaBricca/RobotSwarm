@@ -1,0 +1,25 @@
+package it.unicam.cs.followme.app.Instruction;
+
+import it.unicam.cs.followme.app.Robot.Robot;
+import it.unicam.cs.followme.app.Simulation.Environment;
+
+public class MoveToRandomInstruction implements Instruction {
+    private double x1;
+    private double x2;
+    private double y1;
+    private double y2;
+    private double speed;
+
+    public MoveToRandomInstruction(double x1, double x2, double y1, double y2, double speed) {
+        this.x1 = x1;
+        this.x2 = x2;
+        this.y1 = y1;
+        this.y2 = y2;
+        this.speed = speed;
+    }
+
+    @Override
+    public void execute(Robot robot, Environment environment) {
+        robot.moveToRandom(x1, x2, y1, y2, speed);
+    }
+}

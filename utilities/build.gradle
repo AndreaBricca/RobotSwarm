@@ -1,0 +1,7 @@
+
+
+
+plugins {
+    id 'it.unicam.cs.followme.java-library-conventions'
+}
+
