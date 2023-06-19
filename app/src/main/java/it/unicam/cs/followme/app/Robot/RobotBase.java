@@ -5,7 +5,6 @@ import it.unicam.cs.followme.app.Instruction.Instruction;
 import it.unicam.cs.followme.app.Simulation.Environment;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
-
 import java.util.List;
 
 
@@ -19,16 +18,20 @@ public class RobotBase implements Robot {
     private String label;
     private List<Instruction> instructions;
     private int currentInstructionIndex;
+    private double orientation;
 
 
-    public RobotBase() {
+    public RobotBase(String label, double x, double y, double orientation) {
         this.position = new Point2D.Double(0, 0);
         this.velocity = new Velocity(0,0);
         this.conditions = new ArrayList<>();
-        this.environment = environment;
+        this.continueDuration = 0;
+        this.continueTimer = 0;
+        this.environment = null;
         this.label = label;
         this.instructions = new ArrayList<>();
         this.currentInstructionIndex = -1;
+        this.orientation = orientation;
     }
 
     public void executeInstruction(Instruction instruction, Environment environment) {
@@ -81,6 +84,11 @@ public class RobotBase implements Robot {
     @Override
     public void resetInstructionIndex() {
         currentInstructionIndex = -1;
+    }
+
+    @Override
+    public boolean isSignaled(String label) {
+        return conditions.contains(label);
     }
 
     public void update ( double deltaTime){

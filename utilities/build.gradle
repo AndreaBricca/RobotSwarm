@@ -2,6 +2,14 @@
 
 
 plugins {
-    id 'it.unicam.cs.followme.java-library-conventions'
+    id 'java-library'
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    implementation project(':app')
 }
 

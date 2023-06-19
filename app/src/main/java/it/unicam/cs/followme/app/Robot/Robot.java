@@ -21,4 +21,5 @@ public interface Robot {
     int getInstructionIndex();
     List<Instruction> getInstructions();
     void resetInstructionIndex();
+    boolean isSignaled(String label);
 }
