@@ -13,6 +13,7 @@ public class RobotSimulation implements Simulation {
     private List<Robot> robots;
     private List<Area> areas;
 
+
     public RobotSimulation() {
         this.robots = new ArrayList<>();
         this.areas = new ArrayList<>();

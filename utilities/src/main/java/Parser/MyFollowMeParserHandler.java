@@ -1,14 +1,25 @@
 package Parser;
 
 import it.unicam.cs.followme.app.Robot.RobotBase;
-import it.unicam.cs.followme.app.Robot.Velocity;
+import it.unicam.cs.followme.app.Simulation.RobotSimulation;
 import it.unicam.cs.followme.utilities.FollowMeParserHandler;
 import it.unicam.cs.followme.app.Robot.Robot;
+import it.unicam.cs.followme.utilities.FollowMeShapeChecker;
 
 import java.awt.geom.Point2D;
 
 
 public class MyFollowMeParserHandler implements FollowMeParserHandler {
+    private Robot robot;
+    private FollowMeShapeChecker shapeChecker;
+    private RobotSimulation simulation;
+
+    public MyFollowMeParserHandler(RobotSimulation simulation) {
+        robot = new RobotBase("", 0, 0, 0);
+        shapeChecker = FollowMeShapeChecker.DEFAULT_CHECKER;
+        this.simulation = simulation;
+    }
+
     @Override
     public void parsingStarted() {
         // TODO implementazione
@@ -23,57 +34,94 @@ public class MyFollowMeParserHandler implements FollowMeParserHandler {
 
     @Override
     public void moveCommand(double[] args) {
-        double x = args[0];
-        double y = args[1];
-        double speed = args[2];
-        Point2D.Double position = new Point2D.Double(x, y);
-        Robot robot = new RobotBase("", position.getX(), position.getY(), 0);
-        robot.moveTo(x, y, speed);
+        String[] stringArgs = convertToStringArray(args);
+
+        if (shapeChecker.checkParameters(stringArgs)) {
+            double x = args[0];
+            double y = args[1];
+            double speed = args[2];
+            Point2D.Double position = new Point2D.Double(x, y);
+
+            //sposto il Robot nella simulazione
+            Robot robot = simulation.getRobots().get(0);
+            this.robot.moveTo(x, y, speed);
+        } else {
+            System.out.println("Invalid move command parameters");
+        }
     }
 
     @Override
     public void moveRandomCommand(double[] args) {
 
-        double x1 = args[0];
-        double x2 = args[1];
-        double y1 = args[2];
-        double y2 = args[3];
-        double speed = args[4];
-        double randomX = getRandomValue(x1, x2);
-        double randomY = getRandomValue(y1, y2);
-        Point2D.Double position = new Point2D.Double(randomX, randomY);
-        Robot robot = new RobotBase("", position.getX(), position.getY(), 0);
-        robot.moveToRandom(x1, x2, y1, y2, speed);
+        String[] stringArgs = convertToStringArray(args);
+
+        if (shapeChecker.checkParameters(stringArgs)) {
+            double x1 = args[0];
+            double x2 = args[1];
+            double y1 = args[2];
+            double y2 = args[3];
+            double speed = args[4];
+            double randomX = getRandomValue(x1, x2);
+            double randomY = getRandomValue(y1, y2);
+            Point2D.Double position = new Point2D.Double(randomX, randomY);
+            //sposto il robot nella simulazione
+            Robot robot = simulation.getRobots().get(0);
+            this.robot.moveToRandom(x1, x2, y1, y2, speed);
+        } else {
+            System.out.println("Invalid move random command parameters");
+        }
     }
 
     @Override
     public void signalCommand(String label) {
-        Point2D.Double position = new Point2D.Double(0, 0);
-        Robot robot = new RobotBase(label, position.getX(), position.getY(), 0);
-        robot.signal(label);
+        String[] stringArgs = new String[]{label};
+
+        if (shapeChecker.checkParameters(stringArgs)) {
+            Point2D.Double position = new Point2D.Double(0, 0);
+            //segnala il primo robot nella simulazione
+            Robot robot = simulation.getRobots().get(0);
+            this.robot.signal(label);
+        } else {
+            System.out.println("Invalid signal command parameter");
+        }
     }
 
     @Override
     public void unsignalCommand(String label) {
-        Point2D.Double position = new Point2D.Double(0, 0);
-        Robot robot = new RobotBase(label, position.getX(), position.getY(), 0);
-        robot.unsignal(label);
+        String[] stringArgs = new String[]{label};
+
+        if (shapeChecker.checkParameters(stringArgs)) {
+            Point2D.Double position = new Point2D.Double(0, 0);
+            //rimuovi la segnalazione del robot nella simulazione
+            Robot robot = simulation.getRobots().get(0);
+            this.robot.unsignal(label);
+        } else {
+            System.out.println("Invalid unsignal command parameter");
+        }
     }
 
     @Override
     public void followCommand(String label, double[] args) {
-        double distance = args[0];
-        double speed = args[1];
-        Point2D.Double position = new Point2D.Double(0, 0);
-        Robot robot = new RobotBase(label, position.getX(), position.getY(), 0);
-        robot.follow(label, distance, speed);
+        String[] stringArgs = convertToStringArray(args);
+
+        if (shapeChecker.checkParameters(stringArgs)) {
+            double distance = args[0];
+            double speed = args[1];
+            Point2D.Double position = new Point2D.Double(0, 0);
+            // Esegui il comando di "follow" del robot nella simulazione
+            Robot robot = simulation.getRobots().get(0);
+            this.robot.follow(label, distance, speed);
+        } else {
+            System.out.println("Invalid follow command parameters");
+        }
     }
 
     @Override
     public void stopCommand() {
         Point2D.Double position = new Point2D.Double(0, 0);
-        Robot robot = new RobotBase("", position.getX(), position.getY(), 0);
-        robot.stopMoving();
+        // Ferma il robot nella simulazione
+        Robot robot = simulation.getRobots().get(0);
+        this.robot.stopMoving();
     }
 
     @Override
@@ -102,22 +150,15 @@ public class MyFollowMeParserHandler implements FollowMeParserHandler {
 
     @Override
     public void untilCommandStart(String label) {
-        // Esegui un'azione fino a quando l'etichetta specificata viene segnalata
-        RobotBase robot = new RobotBase("", 0, 0, 0);
         while (true) {
             System.out.println("Executing until loop...");
-
-            // Verifica se l'etichetta è stata segnalata
             boolean isLabelSignaled = robot.isSignaled(label);
-
-            // Se l'etichetta è stata segnalata esci dal loop
             if (isLabelSignaled) {
                 break;
             }
             System.out.println("Executing desired action...");
-            // Metti in pausa per un breve periodo prima di ripetere il ciclo
             try {
-                Thread.sleep(1000); // Pausa di 1 secondo
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -127,7 +168,7 @@ public class MyFollowMeParserHandler implements FollowMeParserHandler {
 
     @Override
     public void doForeverStart() {
-// Esegui un'azione in loop infinito
+        // Esegui un'azione in loop infinito
         while (true) {
             System.out.println("Executing forever loop...");
             //condizione di uscita
@@ -141,6 +182,7 @@ public class MyFollowMeParserHandler implements FollowMeParserHandler {
             break;
         }
     }
+
     @Override
     public void doneCommand() {
         System.out.println("Done command executed");
@@ -151,4 +193,11 @@ public class MyFollowMeParserHandler implements FollowMeParserHandler {
         return min + Math.random() * (max - min);
     }
 
+    private String[] convertToStringArray(double[] args) {
+        String[] stringArgs = new String[args.length];
+        for (int i = 0; i < args.length; i++) {
+            stringArgs[i] = String.valueOf(args[i]);
+        }
+        return stringArgs;
+    }
 }
