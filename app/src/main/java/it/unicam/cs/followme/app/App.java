@@ -33,6 +33,14 @@ public class App {
         for (Instruction instruction : program.getInstructions()) {
             robot.executeInstruction(instruction, environment);
         }
+        // controllo se program contiene istruzioni
+        if (!program.getInstructions().isEmpty()) {
+            for (Instruction instruction : program.getInstructions()) {
+                robot.executeInstruction(instruction, environment);
+            }
+        } else {
+            System.out.println("Il programma non contiene istruzioni.");
+        }
 
         // Osserva il risultato o il comportamento del robot
         System.out.println("Posizione finale del robot: " + robot.getPosition());
