@@ -1,7 +1,6 @@
 package it.unicam.cs.followme.app.Robot;
 
-import it.unicam.cs.followme.app.Instruction.ContinueInstruction;
-import it.unicam.cs.followme.app.Instruction.Instruction;
+import it.unicam.cs.followme.app.Instruction.*;
 import it.unicam.cs.followme.app.Simulation.Environment;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -33,14 +32,42 @@ public class RobotBase implements Robot {
         this.currentInstructionIndex = -1;
         this.orientation = orientation;
     }
-
+    @Override
     public void executeInstruction(Instruction instruction, Environment environment) {
-        if (instruction instanceof ContinueInstruction) {
+        if (instruction instanceof MoveInstruction) {
+            MoveInstruction moveInstruction = (MoveInstruction) instruction;
+            double x = moveInstruction.getX();
+            double y = moveInstruction.getY();
+            double speed = moveInstruction.getSpeed();
+            moveTo(x, y, speed);
+        } else if (instruction instanceof MoveToRandomInstruction) {
+            MoveToRandomInstruction moveRandomInstruction = (MoveToRandomInstruction) instruction;
+            double x1 = moveRandomInstruction.getX1();
+            double x2 = moveRandomInstruction.getX2();
+            double y1 = moveRandomInstruction.getY1();
+            double y2 = moveRandomInstruction.getY2();
+            double speed = moveRandomInstruction.getSpeed();
+            moveToRandom(x1, x2, y1, y2, speed);
+        } else if (instruction instanceof SignalInstruction) {
+            SignalInstruction signalInstruction = (SignalInstruction) instruction;
+            String label = signalInstruction.getLabel();
+            signal(label);
+        } else if (instruction instanceof UnsignalInstruction) {
+            UnsignalInstruction unsignalInstruction = (UnsignalInstruction) instruction;
+            String label = unsignalInstruction.getLabel();
+            unsignal(label);
+        } else if (instruction instanceof FollowInstruction) {
+            FollowInstruction followInstruction = (FollowInstruction) instruction;
+            String label = followInstruction.getLabel();
+            double distance = followInstruction.getDistance();
+            double speed = followInstruction.getSpeed();
+            follow(label, distance, speed);
+        } else if (instruction instanceof ContinueInstruction) {
             ContinueInstruction continueInstruction = (ContinueInstruction) instruction;
-            continueDuration = continueInstruction.getDuration();
-            continueTimer = continueDuration;
-        } else {
-            //TODO
+            double duration = continueInstruction.getDuration();
+            continueMoving(duration);
+        } else if (instruction instanceof StopMovingInstruction) {
+            stopMoving();
         }
     }
 
@@ -189,9 +216,6 @@ public class RobotBase implements Robot {
         public void stopMoving () {
             setContinueDuration(0);
         }
-
-
-
 
 }
 

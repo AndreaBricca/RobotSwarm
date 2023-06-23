@@ -15,4 +15,7 @@ public class UnsignalInstruction implements Instruction {
     public void execute(Robot robot, Environment environment) {
         robot.unsignal(label);
     }
+    public String getLabel() {
+        return label;
+    }
 }

@@ -1,0 +1,5 @@
+Environment size: 1000x1000
+Circular area: 500, 500, 200, Area1
+Rectangular area: 200, 300, 400, 200, Area2
+
+

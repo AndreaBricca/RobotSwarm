@@ -12,10 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EnvironmentLoader {
-    public static Environment loadEnvironment() {
+    public static Environment loadEnvironment(String filePath) {
         // Carica le informazioni dell'ambiente da una sorgente esterna
-        List<Area> areas = loadAreas();
-        List<Robot> robots = loadRobots();
+        List<Area> areas = loadAreas(filePath);
+        List<Robot> robots = createRobots();
 
         // Crea un'istanza di Environment con le aree e i robot caricate
         Environment environment = new Environment(areas);
@@ -26,10 +26,10 @@ public class EnvironmentLoader {
         return environment;
     }
 
-    private static List<Area> loadAreas() {
+    private static List<Area> loadAreas(String filePath) {
         List<Area> areas = new ArrayList<>();
 
-        try (BufferedReader reader = new BufferedReader(new FileReader("path.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] tokens = line.split(" ");
@@ -59,27 +59,15 @@ public class EnvironmentLoader {
         return areas;
     }
 
-    private static List<Robot> loadRobots() {
+    private static List<Robot> createRobots() {
         List<Robot> robots = new ArrayList<>();
 
-        try (BufferedReader reader = new BufferedReader(new FileReader("path"))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] tokens = line.split(" ");
-                String label = tokens[0];
-                double x = Double.parseDouble(tokens[1]);
-                double y = Double.parseDouble(tokens[2]);
-                double orientation = Double.parseDouble(tokens[3]);
-
-                // Crea un'istanza di RobotBase con le informazioni caricate
-                RobotBase robot = new RobotBase(label, x, y, orientation);
-
-                // Aggiungi il robot alla lista
-                robots.add(robot);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        // Creazione manuale delle istanze dei robot
+        RobotBase robot1 = new RobotBase("Robot1", 0, 0, 0);
+        RobotBase robot2 = new RobotBase("Robot2", 1, 1, 90);
+        // Aggiungi i robot alla lista
+        robots.add(robot1);
+        robots.add(robot2);
 
         return robots;
     }

@@ -1,5 +1,7 @@
 package it.unicam.cs.followme.utilities;
 
+import java.util.List;
+
 /**
  * This interface is implemented to handle parsing of robot programs. Instances of this interface
  * will be used as follows:
@@ -97,4 +99,5 @@ public interface FollowMeParserHandler {
      * Method invoked when a command "DONE" is parsed.
      */
     void doneCommand();
+
 }

@@ -1,6 +1,5 @@
 package it.unicam.cs.followme.app.Instruction;
 
-import it.unicam.cs.followme.app.Instruction.Instruction;
 import it.unicam.cs.followme.app.Robot.Robot;
 import it.unicam.cs.followme.app.Simulation.Environment;
 
@@ -13,6 +12,18 @@ public class MoveInstruction implements Instruction {
         this.x = x;
         this.y = y;
         this.speed = speed;
+    }
+
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public double getSpeed() {
+        return speed;
     }
 
     @Override

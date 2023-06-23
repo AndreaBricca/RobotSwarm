@@ -22,4 +22,23 @@ public class MoveToRandomInstruction implements Instruction {
     public void execute(Robot robot, Environment environment) {
         robot.moveToRandom(x1, x2, y1, y2, speed);
     }
+    public double getX1() {
+        return x1;
+    }
+
+    public double getX2() {
+        return x2;
+    }
+
+    public double getY1() {
+        return y1;
+    }
+
+    public double getY2() {
+        return y2;
+    }
+
+    public double getSpeed() {
+        return speed;
+    }
 }

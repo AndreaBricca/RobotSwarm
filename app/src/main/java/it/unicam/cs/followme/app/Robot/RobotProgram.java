@@ -23,4 +23,8 @@ public class RobotProgram {
             instruction.execute(robot , environment);
         }
     }
+
+    public List<Instruction> getInstructions() {
+        return instructions;
+    }
 }

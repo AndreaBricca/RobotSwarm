@@ -17,4 +17,16 @@ public class FollowInstruction implements Instruction {
     public void execute(Robot robot, Environment environment) {
         robot.follow(label, distance, speed);
     }
+
+    public double getDistance(){
+        return distance;
+    }
+
+    public String getLabel(){
+        return label;
+    }
+
+    public double getSpeed() {
+        return speed;
+    }
 }

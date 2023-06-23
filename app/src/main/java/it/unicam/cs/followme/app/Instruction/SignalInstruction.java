@@ -16,4 +16,8 @@ public class SignalInstruction implements Instruction {
     public void execute(Robot robot, Environment environment) {
         robot.signal(label);
     }
+
+    public String getLabel() {
+        return label;
+    }
 }

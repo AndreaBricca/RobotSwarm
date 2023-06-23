@@ -2,6 +2,8 @@ package it.unicam.cs.followme.app.Robot;
 
 
 import it.unicam.cs.followme.app.Instruction.Instruction;
+import it.unicam.cs.followme.app.Simulation.Environment;
+
 import java.awt.geom.Point2D;
 import java.util.List;
 
@@ -22,4 +24,6 @@ public interface Robot {
     List<Instruction> getInstructions();
     void resetInstructionIndex();
     boolean isSignaled(String label);
+
+    void executeInstruction(Instruction instruction, Environment environment);
 }
