@@ -3,8 +3,8 @@ package it.unicam.cs.followme.app.Parser;
 import it.unicam.cs.followme.app.Instruction.Instruction;
 import it.unicam.cs.followme.app.Robot.RobotProgram;
 import it.unicam.cs.followme.app.Simulation.RobotSimulation;
-import it.unicam.cs.followme.utilities.FollowMeParser;
-import it.unicam.cs.followme.utilities.FollowMeParserException;
+import it.unicam.cs.followme.app.utilities.FollowMeParser;
+import it.unicam.cs.followme.app.utilities.FollowMeParserException;
 
 import java.io.File;
 import java.io.IOException;

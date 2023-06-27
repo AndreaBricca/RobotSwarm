@@ -1,11 +1,10 @@
 package it.unicam.cs.followme.app.Parser;
 
 import it.unicam.cs.followme.app.Instruction.*;
-import it.unicam.cs.followme.app.Robot.RobotBase;
 import it.unicam.cs.followme.app.Simulation.RobotSimulation;
-import it.unicam.cs.followme.utilities.FollowMeParserHandler;
+import it.unicam.cs.followme.app.utilities.FollowMeParserHandler;
 import it.unicam.cs.followme.app.Robot.Robot;
-import it.unicam.cs.followme.utilities.FollowMeShapeChecker;
+import it.unicam.cs.followme.app.utilities.FollowMeShapeChecker;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;

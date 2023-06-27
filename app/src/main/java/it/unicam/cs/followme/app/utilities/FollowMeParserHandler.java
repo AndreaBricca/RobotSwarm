@@ -1,6 +1,4 @@
-package it.unicam.cs.followme.utilities;
-
-import java.util.List;
+package it.unicam.cs.followme.app.utilities;
 
 /**
  * This interface is implemented to handle parsing of robot programs. Instances of this interface

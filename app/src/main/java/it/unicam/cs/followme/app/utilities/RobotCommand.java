@@ -1,4 +1,4 @@
-package it.unicam.cs.followme.utilities;
+package it.unicam.cs.followme.app.utilities;
 
 import java.util.Optional;
 import java.util.stream.Stream;
