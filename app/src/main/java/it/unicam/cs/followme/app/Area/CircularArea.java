@@ -1,5 +1,7 @@
 package it.unicam.cs.followme.app.Area;
 
+import java.awt.geom.Point2D;
+
 public class CircularArea implements Area {
 
     private double centerX;
@@ -24,5 +26,10 @@ public class CircularArea implements Area {
     @Override
     public String getLabel() {
         return label;
+    }
+
+    @Override
+    public Point2D.Double getCoordinates() {
+        return new Point2D.Double(centerX,centerY);
     }
 }

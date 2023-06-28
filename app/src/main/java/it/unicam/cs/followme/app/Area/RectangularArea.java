@@ -1,5 +1,7 @@
 package it.unicam.cs.followme.app.Area;
 
+import java.awt.geom.Point2D;
+
 public class RectangularArea implements Area{
     private double x;
     private double y;
@@ -24,5 +26,10 @@ public class RectangularArea implements Area{
     @Override
     public String getLabel() {
         return label;
+    }
+
+    @Override
+    public Point2D.Double getCoordinates() {
+        return new Point2D.Double(x,y);
     }
 }

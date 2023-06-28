@@ -18,6 +18,8 @@ public class RobotBase implements Robot {
     private List<Instruction> instructions;
     private int currentInstructionIndex;
     private double orientation;
+    private List<Instruction> executedInstructions;
+
 
 
     public RobotBase(String label, double x, double y, double orientation) {
@@ -31,11 +33,14 @@ public class RobotBase implements Robot {
         this.instructions = new ArrayList<>();
         this.currentInstructionIndex = -1;
         this.orientation = orientation;
+        executedInstructions = new ArrayList<>();
+
     }
     @Override
     public void executeInstruction(Instruction instruction, Environment environment) {
         if (instruction instanceof MoveInstruction) {
             MoveInstruction moveInstruction = (MoveInstruction) instruction;
+            Point2D targetPosition = moveInstruction.getTargetPosition();
             double x = moveInstruction.getX();
             double y = moveInstruction.getY();
             double speed = moveInstruction.getSpeed();
@@ -69,6 +74,11 @@ public class RobotBase implements Robot {
         } else if (instruction instanceof StopMovingInstruction) {
             stopMoving();
         }
+        System.out.println("Esecuzione istruzione: " + instruction.toString());
+    }
+
+    public List<Instruction> getExecutedInstructions() {
+        return executedInstructions;
     }
 
     public void setContinueDuration(double duration) {
