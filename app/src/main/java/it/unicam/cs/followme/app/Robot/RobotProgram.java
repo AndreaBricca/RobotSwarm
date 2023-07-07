@@ -1,5 +1,6 @@
 package it.unicam.cs.followme.app.Robot;
 
+import it.unicam.cs.followme.app.Area.Area;
 import it.unicam.cs.followme.app.Instruction.Instruction;
 import it.unicam.cs.followme.app.Simulation.Environment;
 
@@ -7,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RobotProgram {
-
     private List<Instruction> instructions;
 
     public RobotProgram() {

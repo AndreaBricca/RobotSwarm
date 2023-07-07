@@ -32,4 +32,13 @@ public class CircularArea implements Area {
     public Point2D.Double getCoordinates() {
         return new Point2D.Double(centerX,centerY);
     }
+
+    public double getRadius() {
+        return radius;
+    }
+
+    public Point2D.Double getCenterCoordinates() {
+        return new Point2D.Double(centerX, centerY);
+    }
+
 }

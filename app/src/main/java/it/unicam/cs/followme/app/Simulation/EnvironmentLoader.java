@@ -12,13 +12,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EnvironmentLoader {
+
     public static Environment loadEnvironment(String filePath) {
         // Carica le informazioni dell'ambiente da una sorgente esterna
         List<Area> areas = loadAreas(filePath);
-        List<Robot> robots = createRobots();
+        List<RobotBase> robots = createRobots();
 
         // Crea un'istanza di Environment con le aree e i robot caricate
-        Environment environment = new Environment(areas);
+        Environment environment = new Environment(areas,robots);
         for (Robot robot : robots) {
             environment.addRobot(robot);
         }
@@ -26,7 +27,7 @@ public class EnvironmentLoader {
         return environment;
     }
 
-    private static List<Area> loadAreas(String filePath) {
+    public static List<Area> loadAreas(String filePath) {
         List<Area> areas = new ArrayList<>();
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
@@ -59,12 +60,12 @@ public class EnvironmentLoader {
         return areas;
     }
 
-    private static List<Robot> createRobots() {
-        List<Robot> robots = new ArrayList<>();
+    private static List<RobotBase> createRobots() {
+        List<RobotBase> robots = new ArrayList<>();
 
         // Creazione manuale delle istanze dei robot
-        RobotBase robot1 = new RobotBase("Robot1", 0, 0, 0);
-        RobotBase robot2 = new RobotBase("Robot2", 1, 1, 90);
+        RobotBase robot1 = new RobotBase("Robot1", 0.0, 0.0, 0.0, 0.0);
+        RobotBase robot2 = new RobotBase("Robot2", 1.0, 1.0, 90.0, 0.0);
         // Aggiungi i robot alla lista
         robots.add(robot1);
         robots.add(robot2);

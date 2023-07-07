@@ -7,10 +7,12 @@ package it.unicam.cs.followme.app.Robot;
 public class Velocity {
     private double x;
     private double y;
+    private double speed;
 
     public Velocity(double x, double y) {
         this.x = x;
         this.y = y;
+        this.speed = speed;
     }
 
     public double getX() {
@@ -27,5 +29,9 @@ public class Velocity {
 
     public void setY(double y) {
         this.y = y;
+    }
+
+    public double getSpeed(){
+        return speed;
     }
 }

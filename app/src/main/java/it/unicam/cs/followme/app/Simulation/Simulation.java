@@ -1,6 +1,7 @@
 package it.unicam.cs.followme.app.Simulation;
 
 import it.unicam.cs.followme.app.Robot.Robot;
+import it.unicam.cs.followme.app.Robot.RobotBase;
 
 import java.util.List;
 
@@ -12,6 +13,6 @@ public interface Simulation {
 
     Environment perceiveEnvironment(Robot robot);
 
-    List<Robot> getRobots();
+    List<RobotBase> getRobots();
 
 }

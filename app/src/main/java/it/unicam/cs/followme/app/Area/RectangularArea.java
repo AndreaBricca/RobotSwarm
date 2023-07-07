@@ -32,4 +32,18 @@ public class RectangularArea implements Area{
     public Point2D.Double getCoordinates() {
         return new Point2D.Double(x,y);
     }
+
+
+    public int getWidth() {
+        return (int) width;
+    }
+
+
+    public int getHeight() {
+        return (int) height;
+    }
+
+    public Point2D.Double getTopLeftCoordinates() {
+        return new Point2D.Double(x, y);
+    }
 }

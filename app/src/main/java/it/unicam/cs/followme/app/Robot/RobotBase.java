@@ -2,6 +2,9 @@ package it.unicam.cs.followme.app.Robot;
 
 import it.unicam.cs.followme.app.Instruction.*;
 import it.unicam.cs.followme.app.Simulation.Environment;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,11 +22,14 @@ public class RobotBase implements Robot {
     private int currentInstructionIndex;
     private double orientation;
     private List<Instruction> executedInstructions;
+    private static double radius;
+    private JComponent robotComponent;
+    private String name;
 
 
 
-    public RobotBase(String label, double x, double y, double orientation) {
-        this.position = new Point2D.Double(0, 0);
+    public RobotBase(String label, double x, double y, double orientation, double radius) {
+        this.position = new Point2D.Double(x,y);
         this.velocity = new Velocity(0,0);
         this.conditions = new ArrayList<>();
         this.continueDuration = 0;
@@ -34,7 +40,9 @@ public class RobotBase implements Robot {
         this.currentInstructionIndex = -1;
         this.orientation = orientation;
         executedInstructions = new ArrayList<>();
-
+        robotComponent = createRobotComponent();
+        this.radius = radius;
+        this.name = name;
     }
     @Override
     public void executeInstruction(Instruction instruction, Environment environment) {
@@ -128,6 +136,16 @@ public class RobotBase implements Robot {
         return conditions.contains(label);
     }
 
+    @Override
+    public double getRadius() {
+        return radius;
+    }
+
+    public static void setRadius(double value) {
+        radius = value; // Imposta il raggio condiviso
+    }
+
+
     public void update ( double deltaTime){
             if (continueTimer > 0) {
                 // Il robot è in esecuzione del comando continue
@@ -151,6 +169,7 @@ public class RobotBase implements Robot {
             // Genera una posizione casuale all'interno dell'intervallo [x1, x2] x [y1, y2]
             double randomX = Math.random() * (x2 - x1) + x1;
             double randomY = Math.random() * (y2 - y1) + y1;
+            position = new Point2D.Double(randomX, randomY);
 
             // Calcola la direzione verso la posizione casuale
             double dx = randomX - position.getX();
@@ -190,9 +209,9 @@ public class RobotBase implements Robot {
                 double velocityY = Math.sin(angle) * speed;
 
                 // Aggiorna la posizione e la velocità del robot
-                position.setLocation(targetPosition);
+                position = targetPosition;
                 velocity.setX(velocityX);
-                velocity.setY(velocityY);
+                velocity.setY(velocityY);;
             }
         }
 
@@ -226,6 +245,34 @@ public class RobotBase implements Robot {
         public void stopMoving () {
             setContinueDuration(0);
         }
+
+    public String getName() {
+        return name;
+    }
+
+    private JComponent createRobotComponent() {
+        // Crea e restituisci il componente grafico del robot
+        JLabel label = new JLabel(getName());
+        label.setHorizontalAlignment(SwingConstants.CENTER);
+        label.setBorder(BorderFactory.createLineBorder(Color.black));
+        label.setOpaque(true);
+        label.setBackground(Color.white);
+
+        // Imposta le dimensioni del componente in base al raggio del robot
+        int size = (int) (2 * radius);
+        label.setPreferredSize(new Dimension(size, size));
+
+        return label;
+    }
+    @Override
+    public JComponent getRobotComponent() {
+        return robotComponent;
+    }
+
+    @Override
+    public Velocity getVelocity() {
+        return velocity;
+    }
 
 }
 

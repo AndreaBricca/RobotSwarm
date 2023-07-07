@@ -3,6 +3,8 @@ package it.unicam.cs.followme.app.Simulation;
 
 import it.unicam.cs.followme.app.Area.Area;
 import it.unicam.cs.followme.app.Robot.Robot;
+import it.unicam.cs.followme.app.Robot.RobotBase;
+
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +14,12 @@ public class Environment {
     private List<Area> areas;
     private List<Robot> robots;
 
-    public Environment(List<Area> areas) {
+    public Environment() {
+        this.areas = new ArrayList<>();
+        this.robots = new ArrayList<>();
+    }
+
+    public Environment(List<Area> areas, List<RobotBase> robots) {
         this.areas = new ArrayList<>(areas);
         this.robots = new ArrayList<>();
     }
@@ -31,14 +38,6 @@ public class Environment {
 
     public void addRobot(Robot robot) {
         robots.add(robot);
-    }
-
-    public void removeRobot(Robot robot) {
-        robots.remove(robot);
-    }
-
-    public List<Robot> getRobots() {
-        return robots;
     }
 
     public Point2D.Double getRobotPosition(String label) {
@@ -69,7 +68,9 @@ public class Environment {
         return false;
     }
 
-
+    public List<Robot> getRobots() {
+        return robots;
+    }
 }
 
 
