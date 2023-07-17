@@ -12,7 +12,6 @@ public class Velocity {
     public Velocity(double x, double y) {
         this.x = x;
         this.y = y;
-        this.speed = speed;
     }
 
     public double getX() {

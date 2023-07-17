@@ -7,17 +7,28 @@ import it.unicam.cs.followme.app.Robot.Robot;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.util.List;
 
 public class RobotSimulationPanel extends JPanel {
 
-    private List<Area> areas;
-    private List<Robot> robots;
+    private final List<Area> areas;
+    private final List<Robot> robots;
+    private RobotSimulationGUI gui;
 
     public RobotSimulationPanel(List<Area> areas, List<Robot> robots) {
         this.areas = areas;
         this.robots = robots;
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                Point2D point = e.getPoint();
+                selectRobot(point);
+            }
+        });
     }
 
 
@@ -74,6 +85,24 @@ public class RobotSimulationPanel extends JPanel {
         g.fillOval(x, y, diameter, diameter);
 
         g.setColor(Color.BLACK);
+
         g.drawString(robot.getLabel(), x + diameter / 2, y + diameter / 2);
     }
+
+    public void selectRobot(Point2D point) {
+        for (Robot robot : robots) {
+            if (robot.containsPoint(point)) {
+                gui.selectRobot(robot); // Chiama il metodo selectRobot dell'istanza di RobotSimulationGUI
+                System.out.println("Robot selezionato: " + robot.getLabel());
+                return; // Termina il metodo dopo aver selezionato il robot
+            }
+        }
+        System.out.println("Il robot non è stato selezionato correttamente.");
+    }
+
+    public void setGUI(RobotSimulationGUI gui) {
+        this.gui = gui;
+    }
 }
+
+

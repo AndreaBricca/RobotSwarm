@@ -4,7 +4,7 @@ import it.unicam.cs.followme.app.Robot.Robot;
 import it.unicam.cs.followme.app.Simulation.Environment;
 
 public class UnsignalInstruction implements Instruction {
-    private String label;
+    private final String label;
 
 
     public UnsignalInstruction(String label) {

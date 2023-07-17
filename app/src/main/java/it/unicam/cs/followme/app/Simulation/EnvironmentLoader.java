@@ -14,17 +14,17 @@ import java.util.List;
 public class EnvironmentLoader {
 
     public static Environment loadEnvironment(String filePath) {
+        Environment environment = new Environment();
         // Carica le informazioni dell'ambiente da una sorgente esterna
         List<Area> areas = loadAreas(filePath);
-        List<RobotBase> robots = createRobots();
+        List<RobotBase> robots = createRobots(environment);
 
         // Crea un'istanza di Environment con le aree e i robot caricate
-        Environment environment = new Environment(areas,robots);
+        Environment loadedEnvironment = new Environment(areas,robots);
         for (Robot robot : robots) {
             environment.addRobot(robot);
         }
-
-        return environment;
+        return loadedEnvironment;
     }
 
     public static List<Area> loadAreas(String filePath) {
@@ -60,12 +60,12 @@ public class EnvironmentLoader {
         return areas;
     }
 
-    private static List<RobotBase> createRobots() {
+    private static List<RobotBase> createRobots(Environment environment) {
         List<RobotBase> robots = new ArrayList<>();
 
         // Creazione manuale delle istanze dei robot
-        RobotBase robot1 = new RobotBase("Robot1", 0.0, 0.0, 0.0, 0.0);
-        RobotBase robot2 = new RobotBase("Robot2", 1.0, 1.0, 90.0, 0.0);
+        RobotBase robot1 = new RobotBase("Robot1", 0.0, 0.0, 90.0, environment);
+        RobotBase robot2 = new RobotBase("Robot2", 1.0, 1.0, 90.0, environment);
         // Aggiungi i robot alla lista
         robots.add(robot1);
         robots.add(robot2);

@@ -3,10 +3,8 @@ package it.unicam.cs.followme.app.Robot;
 
 import it.unicam.cs.followme.app.Instruction.Instruction;
 import it.unicam.cs.followme.app.Simulation.Environment;
-
-import java.awt.*;
 import java.awt.geom.Point2D;
-import java.util.List;
+
 
 public interface Robot {
     void moveTo(double x, double y, double speed);
@@ -19,14 +17,10 @@ public interface Robot {
     void setContinueDuration(double duration);
     String getLabel();
     Point2D.Double getPosition();
-    Instruction getCurrentInstruction();
-    void incrementInstructionIndex();
-    int getInstructionIndex();
-    List<Instruction> getInstructions();
-    void resetInstructionIndex();
     boolean isSignaled(String label);
     double getRadius();
     void executeInstruction(Instruction instruction, Environment environment);
-    Component getRobotComponent();
     Velocity getVelocity();
+    void setInstructions(String instructions);
+    boolean containsPoint(Point2D point);
 }

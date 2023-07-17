@@ -4,9 +4,9 @@ import it.unicam.cs.followme.app.Robot.Robot;
 import it.unicam.cs.followme.app.Simulation.Environment;
 
 public class FollowInstruction implements Instruction {
-    private String label;
-    private double distance;
-    private double speed;
+    private final String label;
+    private final double distance;
+    private final double speed;
 
     public FollowInstruction(String label, double distance, double speed) {
         this.label = label;

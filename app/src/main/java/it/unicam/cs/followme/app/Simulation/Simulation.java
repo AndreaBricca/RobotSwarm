@@ -8,11 +8,8 @@ import java.util.List;
 
 public interface Simulation {
     void addRobot(Robot robot);
-    void removeRobot(Robot robot);
     void run(double time, double dt);
-
-    Environment perceiveEnvironment(Robot robot);
-
     List<RobotBase> getRobots();
 
 }
+

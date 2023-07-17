@@ -5,7 +5,7 @@ import it.unicam.cs.followme.app.Simulation.Environment;
 
 public class UntilInstruction implements Instruction{
 
-    private String label;
+    private final String label;
 
     public UntilInstruction(String label) {
         this.label = label;

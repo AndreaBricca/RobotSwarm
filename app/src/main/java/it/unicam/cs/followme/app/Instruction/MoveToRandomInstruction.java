@@ -4,11 +4,11 @@ import it.unicam.cs.followme.app.Robot.Robot;
 import it.unicam.cs.followme.app.Simulation.Environment;
 
 public class MoveToRandomInstruction implements Instruction {
-    private double x1;
-    private double x2;
-    private double y1;
-    private double y2;
-    private double speed;
+    private final double x1;
+    private final double x2;
+    private final double y1;
+    private final double y2;
+    private final double speed;
 
     public MoveToRandomInstruction(double x1, double x2, double y1, double y2, double speed) {
         this.x1 = x1;

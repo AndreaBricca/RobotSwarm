@@ -5,13 +5,10 @@ import it.unicam.cs.followme.app.Simulation.Environment;
 
 public class RepeatInstruction implements Instruction{
 
-    private int repetitions;
+    private final int repetitions;
 
     public RepeatInstruction(int repetitions) {
         this.repetitions = repetitions;
-    }
-    public int getRepetitions() {
-        return repetitions;
     }
     @Override
     public void execute(Robot robot, Environment environment) {

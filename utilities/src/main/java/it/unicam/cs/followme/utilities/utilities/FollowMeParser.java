@@ -1,4 +1,4 @@
-package it.unicam.cs.followme.app.utilities;
+package it.unicam.cs.followme.utilities.utilities;
 
 
 import java.io.File;

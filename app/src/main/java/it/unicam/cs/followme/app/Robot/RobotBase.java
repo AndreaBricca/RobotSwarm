@@ -1,92 +1,70 @@
 package it.unicam.cs.followme.app.Robot;
 
 import it.unicam.cs.followme.app.Instruction.*;
+import it.unicam.cs.followme.app.Parser.MyFollowMeParserHandler;
 import it.unicam.cs.followme.app.Simulation.Environment;
-
-import javax.swing.*;
-import java.awt.*;
+import it.unicam.cs.followme.app.Simulation.RobotSimulation;
+import it.unicam.cs.followme.utilities.utilities.FollowMeParser;
+import it.unicam.cs.followme.utilities.utilities.FollowMeParserException;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class RobotBase implements Robot {
+
     private  Point2D.Double position;
-    private  Velocity velocity;
-    private List<String> conditions;
+    private  final Velocity velocity;
+    private final List<String> conditions;
     private double continueDuration; // Durata del comando continue in secondi
-    private double continueTimer; // Timer per tenere traccia della durata rimanente
-    private Environment environment;
-    private String label;
+    private final Environment environment;
+    private final String label;
     private List<Instruction> instructions;
-    private int currentInstructionIndex;
-    private double orientation;
-    private List<Instruction> executedInstructions;
-    private static double radius;
-    private JComponent robotComponent;
-    private String name;
+    private final double radius;
 
 
-
-    public RobotBase(String label, double x, double y, double orientation, double radius) {
+    public RobotBase(String label, double x, double y, double radius, Environment environment) {
         this.position = new Point2D.Double(x,y);
         this.velocity = new Velocity(0,0);
         this.conditions = new ArrayList<>();
         this.continueDuration = 0;
-        this.continueTimer = 0;
-        this.environment = null;
+        this.environment = environment;
         this.label = label;
         this.instructions = new ArrayList<>();
-        this.currentInstructionIndex = -1;
-        this.orientation = orientation;
-        executedInstructions = new ArrayList<>();
-        robotComponent = createRobotComponent();
         this.radius = radius;
-        this.name = name;
     }
     @Override
     public void executeInstruction(Instruction instruction, Environment environment) {
-        if (instruction instanceof MoveInstruction) {
-            MoveInstruction moveInstruction = (MoveInstruction) instruction;
-            Point2D targetPosition = moveInstruction.getTargetPosition();
+        if (instruction instanceof MoveInstruction moveInstruction) {
             double x = moveInstruction.getX();
             double y = moveInstruction.getY();
             double speed = moveInstruction.getSpeed();
             moveTo(x, y, speed);
-        } else if (instruction instanceof MoveToRandomInstruction) {
-            MoveToRandomInstruction moveRandomInstruction = (MoveToRandomInstruction) instruction;
+        } else if (instruction instanceof MoveToRandomInstruction moveRandomInstruction) {
             double x1 = moveRandomInstruction.getX1();
             double x2 = moveRandomInstruction.getX2();
             double y1 = moveRandomInstruction.getY1();
             double y2 = moveRandomInstruction.getY2();
             double speed = moveRandomInstruction.getSpeed();
             moveToRandom(x1, x2, y1, y2, speed);
-        } else if (instruction instanceof SignalInstruction) {
-            SignalInstruction signalInstruction = (SignalInstruction) instruction;
+        } else if (instruction instanceof SignalInstruction signalInstruction) {
             String label = signalInstruction.getLabel();
             signal(label);
-        } else if (instruction instanceof UnsignalInstruction) {
-            UnsignalInstruction unsignalInstruction = (UnsignalInstruction) instruction;
+        } else if (instruction instanceof UnsignalInstruction unsignalInstruction) {
             String label = unsignalInstruction.getLabel();
             unsignal(label);
-        } else if (instruction instanceof FollowInstruction) {
-            FollowInstruction followInstruction = (FollowInstruction) instruction;
+        } else if (instruction instanceof FollowInstruction followInstruction) {
             String label = followInstruction.getLabel();
             double distance = followInstruction.getDistance();
             double speed = followInstruction.getSpeed();
             follow(label, distance, speed);
-        } else if (instruction instanceof ContinueInstruction) {
-            ContinueInstruction continueInstruction = (ContinueInstruction) instruction;
+        } else if (instruction instanceof ContinueInstruction continueInstruction) {
             double duration = continueInstruction.getDuration();
             continueMoving(duration);
         } else if (instruction instanceof StopMovingInstruction) {
             stopMoving();
         }
         System.out.println("Esecuzione istruzione: " + instruction.toString());
-    }
-
-    public List<Instruction> getExecutedInstructions() {
-        return executedInstructions;
     }
 
     public void setContinueDuration(double duration) {
@@ -104,34 +82,6 @@ public class RobotBase implements Robot {
     }
 
     @Override
-    public Instruction getCurrentInstruction() {
-        if (currentInstructionIndex >= 0 && currentInstructionIndex < instructions.size()) {
-            return instructions.get(currentInstructionIndex);
-        }
-        return null;
-    }
-
-    @Override
-    public void incrementInstructionIndex() {
-        currentInstructionIndex++;
-    }
-
-    @Override
-    public int getInstructionIndex() {
-        return currentInstructionIndex;
-    }
-
-    @Override
-    public List<Instruction> getInstructions() {
-        return instructions;
-    }
-
-    @Override
-    public void resetInstructionIndex() {
-        currentInstructionIndex = -1;
-    }
-
-    @Override
     public boolean isSignaled(String label) {
         return conditions.contains(label);
     }
@@ -141,26 +91,9 @@ public class RobotBase implements Robot {
         return radius;
     }
 
-    public static void setRadius(double value) {
-        radius = value; // Imposta il raggio condiviso
-    }
 
-
-    public void update ( double deltaTime){
-            if (continueTimer > 0) {
-                // Il robot è in esecuzione del comando continue
-                continueTimer -= deltaTime;
-                if (continueTimer <= 0) {
-                    //TODO
-                    // Il comando continue è terminato, esegui altre azioni
-                }
-            } else {
-                //TODO
-            }
-        }
-
-        @Override
-        public void moveTo ( double x, double y, double speed){
+    @Override
+    public void moveTo ( double x, double y, double speed){
             position.setLocation(x, y);
         }
 
@@ -211,11 +144,12 @@ public class RobotBase implements Robot {
                 // Aggiorna la posizione e la velocità del robot
                 position = targetPosition;
                 velocity.setX(velocityX);
-                velocity.setY(velocityY);;
-            }
+                velocity.setY(velocityY);
+        }
         }
 
     private Point2D.Double calculateTargetPosition(String label, double distance) {
+
         // Recupera la posizione del robot con l'etichetta specificata
         Point2D.Double targetPosition = environment.getRobotPosition(label);
 
@@ -236,7 +170,7 @@ public class RobotBase implements Robot {
         return new Point2D.Double(targetX, targetY);
     }
 
-    @Override
+        @Override
         public void continueMoving ( double duration){
             setContinueDuration(duration);
         }
@@ -246,34 +180,46 @@ public class RobotBase implements Robot {
             setContinueDuration(0);
         }
 
-    public String getName() {
-        return name;
-    }
-
-    private JComponent createRobotComponent() {
-        // Crea e restituisci il componente grafico del robot
-        JLabel label = new JLabel(getName());
-        label.setHorizontalAlignment(SwingConstants.CENTER);
-        label.setBorder(BorderFactory.createLineBorder(Color.black));
-        label.setOpaque(true);
-        label.setBackground(Color.white);
-
-        // Imposta le dimensioni del componente in base al raggio del robot
-        int size = (int) (2 * radius);
-        label.setPreferredSize(new Dimension(size, size));
-
-        return label;
-    }
-    @Override
-    public JComponent getRobotComponent() {
-        return robotComponent;
-    }
 
     @Override
     public Velocity getVelocity() {
         return velocity;
     }
 
+    @Override
+    public void setInstructions(String instructions) {
+        try {
+
+            RobotSimulation simulation = new RobotSimulation();
+            this.instructions = convertInstructions(instructions, simulation);
+        } catch (FollowMeParserException e) {
+            // Gestione dell'eccezione specifica del parser
+            System.out.println("Errore durante il parsing delle istruzioni: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public boolean containsPoint(Point2D point) {
+        double distance = getPosition().distance(point);
+        return distance <= getRadius();
+    }
+
+    private List<Instruction> convertInstructions(String instructions, RobotSimulation simulation) throws FollowMeParserException {
+
+        // Parser personalizzato per le istruzioni
+        MyFollowMeParserHandler parserHandler = new MyFollowMeParserHandler(simulation, environment);
+        // Configurazione del parser con il parser handler
+        FollowMeParser parser = new FollowMeParser(parserHandler);
+        // Parsing delle istruzioni
+        parser.parseRobotProgram(instructions);
+
+        // Recupera le istruzioni convertite dal parser handler
+        return new ArrayList<>(parserHandler.getInstructions());
+    }
+
 }
+
+
 
 

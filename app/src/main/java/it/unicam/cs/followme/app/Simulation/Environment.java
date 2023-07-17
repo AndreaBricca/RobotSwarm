@@ -11,8 +11,8 @@ import java.util.List;
 
 public class Environment {
 
-    private List<Area> areas;
-    private List<Robot> robots;
+    private final List<Area> areas;
+    private final List<Robot> robots;
 
     public Environment() {
         this.areas = new ArrayList<>();
@@ -23,15 +23,6 @@ public class Environment {
         this.areas = new ArrayList<>(areas);
         this.robots = new ArrayList<>();
     }
-
-    public void addArea(Area area) {
-        areas.add(area);
-    }
-
-    public void removeArea(Area area) {
-        areas.remove(area);
-    }
-
     public List<Area> getAreas() {
         return areas;
     }
@@ -47,29 +38,6 @@ public class Environment {
             }
         }
         return null;
-    }
-
-    public List<Area> getPerceptibleAreas(Point2D.Double position) {
-        List<Area> perceptibleAreas = new ArrayList<>();
-        for (Area area : areas) {
-            if (area.containsPosition(position.getX(), position.getY())) {
-                perceptibleAreas.add(area);
-            }
-        }
-        return perceptibleAreas;
-    }
-
-    public boolean isPositionInArea(Point2D.Double position) {
-        for (Area area : areas) {
-            if (area.containsPosition(position.getX(), position.getY())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public List<Robot> getRobots() {
-        return robots;
     }
 }
 
